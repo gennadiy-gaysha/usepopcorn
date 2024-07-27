@@ -9,12 +9,14 @@ import Box from "./components/Box";
 import MovieList from "./components/MovieList";
 import WatchedSummary from "./components/WatchedSummary";
 import WatchedMovieList from "./components/WatchedMovieList";
+import Loader from "./components/Loader";
 
 const KEY = "66198b53";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isLoading, setIsLoading] = useState(false);
 
   // const handleClick = () => {
   //   fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -32,11 +34,13 @@ export default function App() {
   // async function fetchMovies(): This defines an asynchronous function named fetchMovies inside the useEffect callback. This function will handle fetching the data from the API.
   useEffect(function () {
     async function fetchMovies() {
+      setIsLoading(true);
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`
       );
       const data = await res.json();
       setMovies(data.Search);
+      setIsLoading(false);
     }
     fetchMovies();
   }, []);
@@ -51,7 +55,7 @@ export default function App() {
       <Main>
         <Box>
           {/* <button onClick={handleClick}>click!</button> */}
-          <MovieList movies={movies} />
+          {isLoading ? <Loader /> : <MovieList movies={movies} />}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
