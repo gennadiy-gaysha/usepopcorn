@@ -11,6 +11,7 @@ import WatchedSummary from "./components/WatchedSummary";
 import WatchedMovieList from "./components/WatchedMovieList";
 import Loader from "./components/Loader";
 import ErrorMessage from "./components/ErrorMessage";
+import MovieDetails from "./components/MovieDetails";
 
 const KEY = "66198b53";
 
@@ -19,7 +20,8 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("Inception");
+  const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
   // useEffect(function () {
   //   console.log("Runs after component is mounted");
@@ -53,8 +55,17 @@ export default function App() {
 
   // async function fetchMovies(): This defines an asynchronous function named fetchMovies inside the useEffect callback. This function will handle fetching the data from the API.
 
-  const tempQuery = "interstellar";
+  // const tempQuery = "interstellar";
   // const query = "klkjlk";
+
+  // functional state update - it guarantees that the state update will always use the most recent state
+  function handleSelectMovie(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
 
   useEffect(
     function () {
@@ -75,6 +86,7 @@ export default function App() {
           if (data.Response === "False")
             throw new Error("Movies with this keyword is not found");
           setMovies(data.Search);
+          // console.log(data.Search);
           // When an error is thrown within the try block, it is passed to the catch block as err.
         } catch (err) {
           // catches error, when internet connection is failed
@@ -121,13 +133,24 @@ export default function App() {
         <Box>
           {/* <button onClick={handleClick}>click!</button> */}
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
           {isLoading && <Loader />}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selectedId ? (
+            <MovieDetails
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
