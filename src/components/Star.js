@@ -5,9 +5,9 @@ const startStyle = {
   cursor: "pointer",
 };
 
-function Star() {
+function Star({ onRating }) {
   return (
-    <span role="button" style={startStyle}>
+    <span role="button" style={startStyle} onClick={onRating}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
