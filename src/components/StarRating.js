@@ -29,7 +29,12 @@ function StarRating({ maxRating = 5 }) {
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           // <span>S{i + 1}</span>
-          <Star key={i} onRating={() => handleRating(i)} />
+          <Star
+            key={i}
+            onRating={() => handleRating(i)}
+            rating={rating}
+            full={rating >= i + 1}
+          />
         ))}
       </div>
       <p style={textStyle}>{rating || ""}</p>
