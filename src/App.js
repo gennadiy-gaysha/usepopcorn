@@ -20,7 +20,7 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Inception");
   const [selectedId, setSelectedId] = useState(null);
 
   // useEffect(function () {
@@ -144,6 +144,7 @@ export default function App() {
             <MovieDetails
               selectedId={selectedId}
               onCloseMovie={handleCloseMovie}
+              KEY={KEY}
             />
           ) : (
             <>
