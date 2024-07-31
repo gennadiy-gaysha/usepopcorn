@@ -19,7 +19,12 @@ StarRating.propTypes = {
   size: PropTypes.number,
 };
 
-function StarRating({ maxRating = 5, color = "#fcc419", size = 24 }) {
+function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 24,
+  onSetUserRating,
+}) {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
 
@@ -33,6 +38,7 @@ function StarRating({ maxRating = 5, color = "#fcc419", size = 24 }) {
   // If the logic is simple, directly using setRating in <Star key={i} onRating={() => setRating(i+1)} /> is fine and can be preferred for brevity. However, if the logic inside handleRating becomes more complex, it's better to keep it separate for clarity.
   function handleRating(rating) {
     setRating(rating + 1);
+    onSetUserRating(rating + 1);
   }
 
   return (

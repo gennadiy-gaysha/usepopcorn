@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 
-function MovieDetails({ selectedId, onCloseMovie, KEY }) {
+function MovieDetails({ selectedId, onCloseMovie, KEY, onAddWatched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
   const {
     Title: title,
     Year: year,
@@ -17,6 +18,20 @@ function MovieDetails({ selectedId, onCloseMovie, KEY }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imbdId: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
+    };
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
+  }
 
   useEffect(
     function () {
@@ -60,7 +75,12 @@ function MovieDetails({ selectedId, onCloseMovie, KEY }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} />
+              <StarRating maxRating={10} onSetUserRating={setUserRating} />
+              {userRating && (
+                <button className="btn-add" onClick={handleAdd}>
+                  + Add to list
+                </button>
+              )}
             </div>
 
             <p>
