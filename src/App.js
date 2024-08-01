@@ -4,7 +4,7 @@ import Logo from "./components/Logo";
 import Search from "./components/Search";
 import NumResults from "./components/NumResults";
 import { useEffect, useState } from "react";
-import { tempMovieData, tempWatchedData } from "./components/temporaryData";
+// import { tempMovieData, tempWatchedData } from "./components/temporaryData";
 import Box from "./components/Box";
 import MovieList from "./components/MovieList";
 import WatchedSummary from "./components/WatchedSummary";
@@ -90,7 +90,7 @@ export default function App() {
           if (data.Response === "False")
             throw new Error("Movies with this keyword is not found");
           setMovies(data.Search);
-          // console.log(data.Search);
+          console.log(data.Search.imdbID);
           // When an error is thrown within the try block, it is passed to the catch block as err.
         } catch (err) {
           // catches error, when internet connection is failed
@@ -150,6 +150,7 @@ export default function App() {
               onCloseMovie={handleCloseMovie}
               KEY={KEY}
               onAddWatched={handleAddWatched}
+              watched={watched}
             />
           ) : (
             <>
